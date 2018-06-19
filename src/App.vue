@@ -9,16 +9,19 @@
                         <span> USD | EURO </span>
                     </v-toolbar>
                     <v-list>
-                        <v-list-tile avatar @click="">
+                        <v-list-tile avatar @click=""
+                            v-for="(price, currency) in cryptocurrencies"
+                            :key="currency"
+                        >
                             <v-list-tile-avatar>
-                                <img src="'currency_img'">
+                                <img :src="images[currency]">
                             </v-list-tile-avatar>
                             <v-list-tile-content>
-                                <v-list-tile-title v-text="'Currency Name'">
+                                <v-list-tile-title v-text="currency">
                                 </v-list-tile-title>
                             </v-list-tile-content>
                             <v-list-tile-action>
-                                <span>Currency Price</span>
+                                <span>${{price.USD}} | €{{price.EUR}}</span>
                             </v-list-tile-action>
                         </v-list-tile>
                     </v-list>
@@ -51,8 +54,7 @@ export default {
   },
   created() {
       axios.get('https://min-api.cryptocompare.com/data/pricemulti?fsyms=BTC,ETH,ZEC,ZCL,IOT,LTC,XMR&tsyms=USD,EUR')
-        .then(response => {
-            console.log(response.data)
+        .then(response => {    
             this.cryptocurrencies = response.data;
         }).catch(error => this.errors.push(error));
   },
